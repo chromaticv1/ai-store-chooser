@@ -1,4 +1,3 @@
-from typing import Iterable
 from dotenv import load_dotenv
 import base64
 from langchain.chat_models import init_chat_model
@@ -32,27 +31,6 @@ class CountryPricesList(BaseModel):
 
 structured_llm = llm.with_structured_output(CountryPricesList)
 
-# prompt = "country: (country where the vp bought in bdt is valid, ie global, philipines, etc) \nlisting:\n  300 VP:\n    499 BDT\n  400 VP:\n    699 BDT"
-# def img_extractor(img_path:str, alt_prompt='')->str:
-#     message = {
-#         "role": "user",
-#         "content": [
-#             {
-#                 "type": "text",
-#                 "text": "give me the information in yaml like the example:\n" + (alt_prompt if len(alt_prompt)>0 else prompt),
-#             },
-#             {
-#                 "type": "image",
-#                 "source_type": "base64",
-#                 "data": image_to_base64(img_path),
-#                 "mime_type": "image/jpeg",
-#             },
-#         ],
-#     }
-#
-#     response = (llm.invoke([message]))
-#     return response.text()
-
 def img_extractor(img_path:str):
     message= HumanMessage(
         content=[
@@ -67,9 +45,9 @@ def img_extractor(img_path:str):
         ]
     )
     response= cast( CountryPricesList, structured_llm.invoke([message]))
-    return response.model_dump()
+    return response.model_dump()['items']
 
-def img_extr_2(l:Iterable, alt_prompt:str='')->list:
+def img_extr_2(l:list, alt_prompt:str='')->list:
     outputs = []
     for img_path in l:
         outputs.append(img_extractor(img_path))
@@ -77,7 +55,9 @@ def img_extr_2(l:Iterable, alt_prompt:str='')->list:
     return outputs
 # test, python vision_agent.py
 if __name__ == "__main__":
-    pprint('Simple---')
-    pprint(img_extractor('./test/ssb.jpg'))
-    pprint('3 Countires---')
-    pprint(img_extractor('./test/three_countries.jpg'))
+    # pprint('Simple---')
+    #pprint(img_extractor('./test/ssb.jpg'))
+    #pprint('3 Countires---')
+    #pprint(img_extractor('./test/three_countries.jpg'))
+    x = img_extr_2(['./test/ssb.jpg','./test/three_countries.jpg'])
+    pprint(x)
