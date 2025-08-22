@@ -84,6 +84,7 @@ def img_extr_2(l:list, alt_prompt:str='')->pd.DataFrame:
     for record in df_records:
         df_records_flattened = df_records_flattened + record
     df_output = (pd.DataFrame(df_records_flattened))
+    df_output.to_csv('./outputs/test.csv')
     return df_output
 
 

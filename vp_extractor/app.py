@@ -17,7 +17,8 @@ with gr.Blocks() as demo:
     inp = gr.Files()
     btn = gr.Button("Run")
     # out_plot = gr.Plot()
-    out_plot = gr.LinePlot(x='vp_amount', y='vp_price', color='country')
+    #out_plot = gr.LinePlot(x='vp_amount', y='vp_price', color='country')
+    out_plot = gr.DataFrame()
     btn.click(fn=read_from_image, inputs=inp, outputs= out_plot)
 
 demo.launch()

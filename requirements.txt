@@ -1,5 +1,12 @@
 gradio
 langchain
+langchain_experimental
 langchain[google-genai]
 langchain_community
 dotenv
+matplotlib
+pandas
+streamlit
+openai
+scipy
+tabulate
