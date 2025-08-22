@@ -5,6 +5,12 @@ from langchain_core.messages import HumanMessage
 from pydantic import BaseModel
 from typing import List, cast
 
+def dp(*args):
+    print('DEBUG', *args)
+
+import itertools
+import pandas as pd
+
 from pprint import pprint
 load_dotenv()
 
@@ -45,19 +51,49 @@ def img_extractor(img_path:str):
         ]
     )
     response= cast( CountryPricesList, structured_llm.invoke([message]))
-    return response.model_dump()['items']
+    response_json = response.model_dump()
+    response_json['store_name'] = img_path.split('/')[-1].split('.')[0]
+    return response_json
 
-def img_extr_2(l:list, alt_prompt:str='')->list:
+def img_extr_2(l:list, alt_prompt:str='')->pd.DataFrame:
+
+    def json_to_long_df(CPS: dict) :
+        found_records = []
+        store_name = CPS['store_name']
+        for item in CPS['items']:
+            country = item['country']
+            for price in item['prices']:
+                vp_amount = price['vp_amount']
+                vp_price = price['price']
+                found_records.append({
+                    'store_name': store_name,
+                    'country': country,
+                    'vp_amount': vp_amount,
+                    'vp_price': vp_price
+                })
+        return found_records
+
     outputs = []
     for img_path in l:
-        outputs.append(img_extractor(img_path))
-    
-    return outputs
+
+        img_extractor_output = (img_extractor(img_path))
+        outputs.append(img_extractor_output)
+
+    df_records = map(json_to_long_df, outputs)
+    df_records_flattened = []
+    for record in df_records:
+        df_records_flattened = df_records_flattened + record
+    df_output = (pd.DataFrame(df_records_flattened))
+    return df_output
+
+
 # test, python vision_agent.py
 if __name__ == "__main__":
     # pprint('Simple---')
     #pprint(img_extractor('./test/ssb.jpg'))
     #pprint('3 Countires---')
     #pprint(img_extractor('./test/three_countries.jpg'))
-    x = img_extr_2(['./test/ssb.jpg','./test/three_countries.jpg'])
-    pprint(x)
+    #dp(x)
+    x = img_extr_2(['./test/ssb.jpg',
+                    './test/three_countries.jpg'])
+    print(x.info())
