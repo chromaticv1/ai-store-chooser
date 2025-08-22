@@ -10,3 +10,4 @@ streamlit
 openai
 scipy
 tabulate
+seaborn
