@@ -3,8 +3,8 @@ This project was done on windows, python 3.13.5
 ## Setup environment:
 1. clone the project:
     ```sh
-        git clone https://github.com/chromaticv1/ai-store-chooser --depth=1
-        cd ai-store-chooser
+    git clone https://github.com/chromaticv1/ai-store-chooser --depth=1
+    cd ai-store-chooser
     ```
 2. setup python environment
     ```sh
