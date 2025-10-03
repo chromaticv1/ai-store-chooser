@@ -5,7 +5,7 @@ load_dotenv()
 
 def get_agent(df):
     return create_pandas_dataframe_agent(
-        init_chat_model("gemini-2.5-flash-lite-preview-06-17", model_provider = "google_genai"),
+        init_chat_model("gemini-2.5-flash-lite", model_provider = "google_genai"),
         df,
         verbose=True,
         allow_dangerous_code = True
