@@ -15,7 +15,8 @@ This project was done on windows, python 3.13.5
     source .venv/bin/activate
     ```
     for Linux, WSL, Mac or anything unix;
-    ```ps1 ./.venv/scripts/activate
+    ```ps1
+    ./.venv/scripts/activate
     ```
     on Windows.
 4. put `GOOGLE_API_KEY=#######...` in `.env` such as the structure below. [find your key here](https://aistudio.google.com/apikey)
