@@ -19,7 +19,7 @@ def image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-model_name = "gemini-2.5-flash-lite"
+model_name = "gemma-3-4b-it"
 model_provider = "google_genai"
 llm = init_chat_model(model = model_name, model_provider =model_provider)
 
@@ -36,14 +36,15 @@ class PriceList(BaseModel):
 class CountryPricesList(BaseModel):
     items: List[PriceList] 
 
-structured_llm = llm.with_structured_output(CountryPricesList)
+# structured_llm = llm.with_structured_output(CountryPricesList)
 
 def img_extractor(img_path:str):
-   # print(f"{mimetypes.guess_type(img_path)[0]= } {type(mimetypes.guess_type(img_path)[0])}")
+    import json
+    # print(f"{mimetypes.guess_type(img_path)[0]= } {type(mimetypes.guess_type(img_path)[0])}")
     message= HumanMessage(
         content=[
             {'type': 'text',
-             'text': 'This is a seller poster of valorant vp. Extract the full name of the countries, how much vp you get and how much you have to pay in bdt for that much vp in JSON. PHP means Philippines, MYS means Malaysia, BD means Bangladesh. If nothing is said then its Bangladesh.' 
+             'text': 'This is a seller poster of valorant vp. Extract the full name of the countries, how much vp you get and how much you have to pay in bdt for that much vp in JSON. PHP means Philippines, MYS means Malaysia, BD means Bangladesh. If nothing is said then its Bangladesh. Return ONLY raw JSON matching this schema: {items: [{country: str, prices: [{vp_amount: int, price: float}]}]}' 
              },
             {"type": 'image',
              'source_type': 'base64',
@@ -52,8 +53,22 @@ def img_extractor(img_path:str):
              }
         ]
     )
-    response= cast( CountryPricesList, structured_llm.invoke([message]))
-    response_json = response.model_dump()
+    # response= cast( CountryPricesList, structured_llm.invoke([message]))
+    response = llm.invoke([message])
+    content = response.content
+    if "```json" in content:
+        content = content.split("```json")[1].split("```")[0]
+    elif "```" in content:
+        content = content.split("```")[1].split("```")[0]
+    
+    try:
+        response_json = json.loads(content)
+        # Validation could be added here manually if needed, or by passing to Pydantic
+        # validated = CountryPricesList(**response_json) # optional
+    except Exception as e:
+        print(f"JSON Parsing failed: {e}. Content: {content}")
+        return {} # or raise
+
     response_json['store_name'] = img_path.split('/')[-1].split('\\')[-1].split('.')[0]
     return response_json
 
