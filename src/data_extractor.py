@@ -19,7 +19,7 @@ def image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-model_name = "gemma-3-4b-it"
+model_name = "gemma-3-27b-it"
 model_provider = "google_genai"
 llm = init_chat_model(model = model_name, model_provider =model_provider)
 

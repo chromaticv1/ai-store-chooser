@@ -117,16 +117,9 @@ with gr.Blocks(theme=theme, title="AI Store Chooser - Kiosk Demo") as demo:
                 file_types=["image"]
             )
             
-            # Example Images for easy Kiosk usage
-            gr.Examples(
-                examples=[
-                    [["example_images/arekta_coin_store.jpg"]],
-                    [["example_images/infinity_gamestop.jpg"]],
-                    [["example_images/murubbi_game_store.jpg"]]
-                ],
-                inputs=file_input,
-                label="Try these Examples:"
-            )
+            # Link to Google Drive for example images
+            gr.Markdown("📂 [**Download Example Images from Google Drive**](https://drive.google.com/drive/folders/YOUR_ID_HERE)")
+
             
             upload_btn = gr.Button("🚀 Analyze Images", variant="primary")
         
