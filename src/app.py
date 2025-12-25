@@ -153,7 +153,8 @@ with gr.Blocks(title="AI Store Chooser - Kiosk Demo") as demo:
                     ['Which store offers the best value?']
                 ],
                 additional_outputs=[plotbox],
-                additional_inputs=[agent_state]
+                additional_inputs=[agent_state],
+                autofocus=False
                 # type="messages" # Omitted for safety
             )
 
