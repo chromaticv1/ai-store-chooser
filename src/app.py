@@ -90,7 +90,7 @@ theme = gr.themes.Soft(
 )
 
 # --- UI Layout ---
-with gr.Blocks(theme=theme, title="AI Store Chooser - Kiosk Demo") as demo:
+with gr.Blocks(title="AI Store Chooser - Kiosk Demo") as demo:
     # State components
     # Using callables ensures a fresh copy is created for each user session.
     df_state = gr.State(value=get_default_df)
@@ -200,4 +200,4 @@ with gr.Blocks(theme=theme, title="AI Store Chooser - Kiosk Demo") as demo:
                 """
             )
 
-demo.launch()
+demo.launch(theme=theme)
