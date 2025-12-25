@@ -83,10 +83,6 @@ theme = gr.themes.Soft(
     neutral_hue="slate",
     font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"]
 ).set(
-    body_background_fill="*neutral_900",
-    block_background_fill="*neutral_800",
-    block_border_color="*neutral_700",
-    input_background_fill="*neutral_800",
     button_primary_background_fill="#E1306C", # Hot Pink / Magenta
     button_primary_background_fill_hover="#C13584",
     button_primary_text_color="white", 
