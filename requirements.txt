@@ -1,0 +1,10 @@
+dotenv
+gradio
+langchain[google-genai]
+langchain-experimental
+matplotlib
+numpy
+pandas
+scipy
+seaborn
+tabulate
